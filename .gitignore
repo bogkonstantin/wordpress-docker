@@ -1,0 +1,4 @@
+.idea
+.env
+wp
+db_init

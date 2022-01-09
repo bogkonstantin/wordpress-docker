@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+
+    wordpress:
+        build: ./docker/php
+        restart: always
+        env_file:
+            - ./.env
+        ports:
+            - ${WP_PORT:-80}:80
+        environment:
+            XDEBUG_MODE: ${XDEBUG_MODE:-debug}
+            XDEBUG_CONFIG: ${XDEBUG_CONFIG:-client_host=172.17.0.1 client_port=9003}
+            PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=localhost}
+        volumes:
+            - ./${WP_FOLDER:-wp}/:/var/www/html
+            - ./${XDEBUG_PROFILE_FOLDER:-profiles}:/var/www/profiles
+
+    db:
+        image: mysql:5.7
+        restart: always
+        env_file:
+            - ./.env
+        environment:
+            MYSQL_DATABASE: ${DATABASE:-db}
+            MYSQL_USER: ${DATABASE_USER:-dbuser}
+            MYSQL_PASSWORD: ${DATABASE_PASSWORD:-pass}
+            MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:-rootpass}
+        ports:
+            - ${DB_PORT:-3306}:3306
+        volumes:
+            - db:/var/lib/mysql
+            - ./${DB_INIT_FOLDER:-db_init}/:/docker-entrypoint-initdb.d/
+
+volumes:
+    db:
