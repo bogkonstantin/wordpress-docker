@@ -19,6 +19,14 @@ Copy website files to the `wp` folder.
 
 Add to `wp-config.php` local database connection values. See it in the `docker-compose.yml` or override using the `.env` file.  
 
+Default parameters:
+```php
+define( 'DB_NAME', "db" );
+define( 'DB_USER', "dbuser" );
+define( 'DB_PASSWORD', "pass" );
+define( 'DB_HOST', "db" );
+```
+
 Set domain to localhost in `wp-config.php`:
 ```php
 define('WP_HOME','http://localhost');
